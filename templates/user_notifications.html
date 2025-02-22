@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Notifications</title>
+  </head>
+  <body>
+    <!-- Navbar Section -->
+    <nav
+      class="navbar navbar-expand-lg navbar-dark"
+      style="background-color: #0c0920"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="#">Appointment </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          onclick="toggleSidebar()"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <!-- Home and Logout removed from Navbar -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+      <div class="row flex-grow-1">
+        <!-- Sidebar Section -->
+        {% include 'includes/sidebar.html' %}
+
+        <div class="col-md-9 main-content">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-3">
+                <input
+                  type="text"
+                  class="form-control w-75"
+                  placeholder="Search notifications..."
+                  id="notificationSearch"
+                />
+                <button
+                  class="btn btn-danger ml-3"
+                  type="button"
+                  id="dismissAllButton"
+                >
+                  Dismiss All
+                </button>
+              </div>
+
+              <ul id="userNotificationsList" class="list-group">
+                {% if notifications %} {% for notification in notifications %}
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center {{ 'list-group-item-success' if notification.seen else 'list-group-item-warning' }}"
+                  id="notification_{{ notification.id }}"
+                >
+                  <div>
+                    <span
+                      class="badge {{ 'badge-success' if notification.seen else 'badge-warning' }} mr-2"
+                    ></span>
+                    <span class="font-weight-bold">ACTION REQUIRED</span>
+                    <p class="mb-1">{{ notification.message }}</p>
+                    <small
+                      >{{ notification.created_at.strftime('%m/%d/%Y %I:%M %p')
+                      if notification.created_at else 'Date Unavailable'
+                      }}</small
+                    >
+                  </div>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    onclick="deleteNotification('{{ notification.id }}');"
+                  >
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </li>
+                {% endfor %} {% else %}
+                <li class="list-group-item text-center">
+                  You have no notifications.
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          <script>
+            // Delete a specific notification
+            function deleteNotification(notificationId) {
+              fetch("/delete_notification/" + notificationId, {
+                method: "DELETE",
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    return response.json();
+                  } else {
+                    throw new Error("Failed to delete notification");
+                  }
+                })
+                .then((data) => {
+                  if (data.success) {
+                    // Remove notification from the list
+                    const notificationElement = document.getElementById(
+                      "notification_" + notificationId
+                    );
+                    if (notificationElement) {
+                      notificationElement.remove();
+                    }
+                  } else {
+                    alert("An error occurred while deleting the notification.");
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                  alert("An error occurred while deleting the notification.");
+                });
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+    <footer class="text-center mt-4">
+      <p>&copy; 2024 GymPro</p>
+    </footer>
+  </body>
+</html>

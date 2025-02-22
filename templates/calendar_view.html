@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Calendar - GymPro</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" />
+  <style>
+    .calendar-container {
+      margin-top: 20px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .day {
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .day.available {
+      background-color: #90ee90;
+      cursor: pointer;
+    }
+
+    .day.full {
+      background-color: #f08080;
+      cursor: not-allowed;
+    }
+
+    .day.today {
+      font-weight: bold;
+      border: 2px solid #0c0920;
+    }
+
+    .day:hover {
+      opacity: 0.8;
+    }
+
+    .day h5 {
+      margin: 5px 0;
+    }
+
+    .day p {
+      margin: 0;
+    }
+
+    .form-container {
+      margin-top: 20px;
+    }
+  </style>
+
+
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth'
+        },
+        initialView: 'dayGridMonth',
+        hiddenDays: ["Saturday", "Sunday"], // Hide weekends
+        allDaySlot: false,
+        height: 'auto',
+        expandRows: true,
+        businessHours: [
+          {
+            daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+            startTime: '08:00',
+            endTime: '12:00',
+          },
+          {
+            daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+            startTime: '13:00',
+            endTime: '16:00',
+          }
+        ],
+        selectConstraint: 'businessHours',
+        events: '/get_bookings', // Add this endpoint to fetch bookings
+        eventDisplay: 'block',
+        eventColor: '#f08080',
+        dateClick: function (info) {
+          document.getElementById("appointment_date").value = info.dateStr;
+          $('#bookingModal').modal('show');
+        }
+      });
+      calendar.render();
+    });
+
+  </script>
+</head>
+
+<body>
+  <!-- Navbar Section -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0c0920">
+    <div class="container">
+      <a class="navbar-brand" href="#">Appointment Calendar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto"></ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Include Sidebar -->
+      {% include 'includes/sidebar.html' %}
+
+      <!-- Main Content -->
+      <div class="col-md-9 main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>Success!</strong>
+          {% for category, message in messages %} {{ message }} {% endfor %}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Calendar Section -->
+        <h2 class="text-center">Real-Time Appointment Calendar</h2>
+
+
+
+
+
+        <div id='calendar'></div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookingModalLabel">Book Your Appointment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ url_for('book_appointment') }}" method="POST">
+            <div class="form-group">
+              <label for="appointment_date">Selected Date:</label>
+              <input type="text" id="appointment_date" name="appointment_date" class="form-control" readonly required />
+            </div>
+            <div class="form-group">
+              <label for="appointment_time">Time:</label>
+              <select id="appointment_time" name="appointment_time" class="form-control" required>
+                <option value="morning">Morning (8 AM - 12 NN)</option>
+                <option value="afternoon">Afternoon (1 PM - 4 PM)</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary col-12">Book Appointment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center mt-4">
+    <p>&copy; 2024 GymPro. All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+    <title>Inventory Management</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        {% include 'includes/adminsidebar.html'%}
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <header class="py-3">
+            <h1 class="display-6 text-dark">Inventory Management</h1>
+          </header>
+
+          <!-- Add New Item Form -->
+          <div class="card p-4 mb-4">
+            <h2 class="mb-3">Add New Item</h2>
+
+            <form
+              action="{{ url_for('admin_inventory') }}"
+              method="POST"
+              enctype="multipart/form-data"
+              class="row g-3"
+            >
+              <div class="col-md-6">
+                <input
+                  type="text"
+                  name="item_name"
+                  class="form-control"
+                  placeholder="Item Name"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <select name="condition" class="form-select" required>
+                  <option value="">Select Condition</option>
+                  <option value="New">New</option>
+                  <option value="Used">Used</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <input
+                  type="number"
+                  name="quantity"
+                  class="form-control"
+                  placeholder="Quantity"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <input
+                  type="file"
+                  name="image"
+                  class="form-control"
+                  accept="image/*"
+                />
+              </div>
+              <div class="col-12">
+                <button type="submit" class="col col-12 btn btn-primary">
+                  Add Item
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Inventory Table -->
+          <div class="card p-4">
+            <h2 class="mb-3">Available Items</h2>
+
+            {% if inventory_items %}
+            <div class="table-responsive">
+              <table class="table table-striped" id="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Item Name</th>
+                    <th>Condition</th>
+                    <th>Quantity</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in inventory_items %}
+                  <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.condition }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                      {% if item.image %}
+                      <img
+                        src="{{ url_for('static', filename='images/' + item.image) }}"
+                        alt="{{ item.name }}"
+                        width="50"
+                      />
+                      {% else %} No Image {% endif %}
+                    </td>
+                    <td>
+                      <form
+                        action="{{ url_for('delete_inventory_item', item_id=item.id) }}"
+                        method="POST"
+                      >
+                        <button type="submit" class="btn btn-danger btn-sm">
+                          Delete
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p>No items available in the inventory.</p>
+            {% endif %}
+          </div>
+        </main>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#table").DataTable();
+      });
+    </script>
+    <!-- Footer -->
+    <footer class="admin-footer">
+      <p>&copy; 2024 GymPro</p>
+    </footer>
+  </body>
+</html>

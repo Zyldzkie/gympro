@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+    <title>Notification Management</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        {% include 'includes/adminsidebar.html'%}
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <header class="py-3">
+            <h1 class="display-6 text-dark">Notification Management</h1>
+          </header>
+
+          <div class="card p-4">
+            <div class="table-responsive">
+              <table class="table table-striped" id="table">
+                <thead>
+                  <tr>
+                    <th>Message</th>
+                    <th>Created At</th>
+                    <th>User</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for notification in notifications %}
+                  <tr id="notification-{{ notification.id }}">
+                    <td>
+                      {{ notification.user.firstname }} {{
+                      notification.user.lastname }}
+                    </td>
+                    <td>
+                      {{ notification.user.firstname }}'s booking request has
+                      been {% if 'approved' in notification.message %} approved.
+                      {% elif 'rejected' in notification.message %} rejected.
+                      Reason: {{
+                      notification.message.split('Reason:')[1].split('Solution:')[0]
+                      }} Solution: {{ notification.message.split('Solution:')[1]
+                      }} {% else %} {{ notification.message }} {% endif %}
+                    </td>
+                    <td>{{ notification.created_at }}</td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm delete-btn"
+                        data-notification-id="{{ notification.id }}"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                  <script>
+                    document
+                      .querySelectorAll(".delete-btn")
+                      .forEach((button) => {
+                        button.addEventListener("click", function () {
+                          const notificationId = this.getAttribute(
+                            "data-notification-id"
+                          );
+
+                          fetch("/deletenotification", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type":
+                                "application/x-www-form-urlencoded",
+                            },
+                            body: new URLSearchParams({
+                              notification_id: notificationId,
+                            }),
+                          })
+                            .then((response) => response.json())
+                            .then((data) => {
+                              if (data.success) {
+                                document
+                                  .getElementById(
+                                    `notification-${notificationId}`
+                                  )
+                                  .remove();
+                              } else {
+                                alert("Error deleting feedback: " + data.error);
+                              }
+                            })
+                            .catch((error) => {
+                              console.error("Error:", error);
+                            });
+                        });
+                      });
+                  </script>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#table").DataTable();
+      });
+    </script>
+    <!-- Footer -->
+    <footer class="admin-footer">
+      <p>&copy; 2024 GymPro</p>
+    </footer>
+  </body>
+</html>

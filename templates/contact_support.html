@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support - GymPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Support</h1>
+        <p>Need assistance? We're here to help!</p>
+    </header>
+    <section>
+        <p>Contact our support team at: <strong>support@gympro.com</strong></p>
+        <p>Or call us: <strong>+123 456 7890</strong></p>
+    </section>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+    </nav>
+    <footer>
+        <p>&copy; 2024 GymPro</p>
+    </footer>
+</body>
+</html>

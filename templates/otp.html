@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTP Verification</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #080517;
+      color: #FFFFFF;
+    }
+
+    .otp-input {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-size: 24px;
+      border: 2px solid #20F58A;
+      color: #20F58A;
+      background-color: transparent;
+      margin: 0 5px;
+      /* Add margin for spacing between boxes */
+    }
+
+    .otp-input::-webkit-inner-spin-button,
+    .otp-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .otp-input {
+      -moz-appearance: textfield;
+    }
+
+    .btn-primary {
+      background-color: #20F58A;
+      border-color: #20F58A;
+      color: #000000;
+    }
+
+    .otp-center {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .otp-animation {
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    .form-container {
+      max-width: 400px;
+      /* Limit the width of the form container */
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container otp-center">
+    <div class="row justify-content-center otp-animation">
+      <div class="col-md-6 form-container">
+        <h2 class="text-center mb-4">Enter OTP</h2>
+        <!-- Flask messages section -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="mb-3">
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <!-- End of Flask messages section -->
+        <form id="otpForm" method="POST" action="{{ url_for('otp') }}">
+          <div class="d-flex justify-content-center mb-3">
+            <input type="text" class="form-control otp-input" maxlength="1" pattern="[0-9]" required autofocus>
+            <input type="text" class="form-control otp-input" maxlength="1" pattern="[0-9]" required>
+            <input type="text" class="form-control otp-input" maxlength="1" pattern="[0-9]" required>
+            <input type="text" class="form-control otp-input" maxlength="1" pattern="[0-9]" required>
+            <input type="text" class="form-control otp-input" maxlength="1" pattern="[0-9]" required>
+            <input type="text" class="form-control otp-input" maxlength="1" pattern="[0-9]" required>
+          </div>
+          <input type="hidden" id="hiddenOtpInput" name="otp">
+          <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const inputs = document.querySelectorAll('.otp-input');
+
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', function () {
+          if (this.value.length === 1) {
+            if (index < inputs.length - 1) {
+              inputs[index + 1].focus();
+            }
+          }
+        });
+
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
+
+        input.addEventListener('paste', function (e) {
+          const pasteData = e.clipboardData.getData('text');
+          const pasteArray = pasteData.split('').slice(0, inputs.length);
+
+          inputs.forEach((input, i) => {
+            input.value = pasteArray[i] || '';
+          });
+
+          inputs[pasteArray.length - 1].focus();
+          e.preventDefault();
+        });
+      });
+
+      document.getElementById('otpForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const otp = Array.from(inputs).map(input => input.value).join('');
+        document.getElementById('hiddenOtpInput').value = otp;
+        this.submit();
+      });
+    });
+  </script>
+</body>
+
+</html>

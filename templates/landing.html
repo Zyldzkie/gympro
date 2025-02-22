@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOrSU Wellness Center</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <!-- Left section: Image background with black overlay -->
+    <div class="left-section">
+        <img src="{{ url_for('static', filename='images/dorsu.jpeg') }}" alt="DOrSU Wellness Center" class="background-image">
+        <div class="overlay"></div> <!-- Add overlay if needed -->
+        <!-- Hero section: welcome message, buttons, and statistics -->
+        <section class="hero">
+            <div class="hero-content-wrapper">
+                <div class="hero-content">
+                    <h1>WELCOME!</h1>
+                    <h2>TO DOrSU WELLNESS CENTER</h2>
+                    <p>Where Academic Goals and Personal Health Meet—Discover the Power of Balance at Our Wellness Center.</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('book_now') }}">
+                            <button class="btn-book">BOOK NOW</button>
+                        </a>
+                        <a href="{{ url_for('contact_support') }}">
+                            <button class="btn-support">CONTACT SUPPORT</button>
+                        </a>
+                    </div>
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>12+</h3>
+                            <p>EXPERTS</p>
+                        </div>
+                        <div class="stat">
+                            <h3>110+</h3>
+                            <p>STUDENTS</p>
+                        </div>
+                        <div class="stat">
+                            <h3>210+</h3>
+                            <p>SUCCESS STORIES</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Right section: Mint green background -->
+    <div class="right-section">
+        <header>
+            <nav>
+                <a href="{{ url_for('home') }}">HOME</a>
+                <a href="{{ url_for('about') }}">ABOUT</a>
+                <a href="{{ url_for('contact') }}">CONTACT</a>
+                <a href="{{ url_for('login') }}">LOGIN</a>
+                <a href="{{ url_for('signup') }}">SIGNUP</a>
+            </nav>
+        </header>
+
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='images/dumbbell.png') }}" alt="Person lifting dumbbell">
+        </div>
+    </div>
+</body>
+</html>

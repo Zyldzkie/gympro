@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+{% include "includes/head.html" %}
+
+<body>
+  <!-- page wrapper -->
+  <div class="page-wrapper pbmit-bg-color-blackish">
+    <!-- Header Main Area -->
+    <header class="site-header header-style-1">
+      {% include "includes/nav.html" %}
+    </header>
+
+    <!-- Header Main Area End Here -->
+    <!-- Title Bar -->
+    <div class="pbmit-title-bar-wrapper">
+      <div class="container">
+        <div class="pbmit-title-bar-content">
+          <div class="pbmit-title-bar-content-inner">
+            <div class="pbmit-tbar">
+              <div class="pbmit-tbar-inner container">
+                <h1 class="pbmit-tbar-title">LOGIN</h1>
+              </div>
+            </div>
+            <div class="pbmit-breadcrumb">
+              <div class="pbmit-breadcrumb-inner">
+                <span><a class="home" href="#" title=""><span>DorSU</span></a></span>
+                <span class="sep">//</span>
+                <span><span class="post-root post post-post current-item">LOGIN</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Title Bar End-->
+    <!-- Contact Us Content -->
+    <div class="page-content">
+      <!-- Login Form Start -->
+      <section class="contact-section">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-6">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+              <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+              {% endif %} {% endwith %}
+
+              <form action="/login" class="contact-form" id="login-form" method="post">
+                <h4>LOGIN TO YOUR ACCOUNT</h4>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p>
+                      <input class="form-control" name="email" placeholder="Email Account" required="" type="text" />
+                    </p>
+                  </div>
+                  <div class="col-md-12">
+                    <p>
+                      <input class="form-control" name="password" placeholder="Password" required="" type="password" />
+                    </p>
+                  </div>
+                  <div class="col-md-12">
+                    <button class="pbmit-btn pbmit-btn-white pbmit-submit-btn" type="submit">
+                      <i class="form-btn-loader fa fa-circle-o-notch fa-spin fa-fw margin-bottom d-none"></i>
+                      <span class="button-text">Login</span>
+                    </button>
+                  </div>
+                  <div class="col-md-12 col-lg-12 message-status"></div>
+                </div>
+              </form>
+              <div class="col-lg-12 text-center mt-3">
+                <p>
+                  Don't have an account? <a href="/signup">Sign Up</a> |
+                  <a href="change-password.php">Forgot Password?</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Login Form End -->
+    </div>
+    <!-- Contact Us Content End -->
+    {% include "includes/footer.html" %}
+  </div>
+  <!-- Page Wrapper End -->
+  <!-- Search Box Start Here -->
+  <div class="pbmit-search-overlay">
+    <div class="pbmit-icon-close"></div>
+    <div class="pbmit-search-outer">
+      <form class="pbmit-site-searchform">
+        <input class="form-control field searchform-s" name="s" placeholder="Search …" type="search" />
+        <button type="submit">
+          <i class="pbmit-base-icon-search-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- Search Box End Here -->
+  <!-- Scroll To Top -->
+  <div class="pbmit-progress-wrap">
+    <svg class="pbmit-progress-circle svg-content" height="100%" viewbox="-1 -1 102 102" width="100%">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+    </svg>
+  </div>
+  <!-- Scroll To Top End -->
+  <!-- JS 
+    ============================================ -->
+  <!-- jQuery JS -->
+  <script data-cfasync="false" src="static/js/email-decode.min.js"></script>
+  <script src="static/js/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="static/js/popper.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="static/js/bootstrap.min.js"></script>
+  <!-- jquery Waypoints JS -->
+  <script src="static/js/jquery.waypoints.min.js"></script>
+  <!-- jquery Appear JS -->
+  <script src="static/js/jquery.appear.js"></script>
+  <!-- Numinate JS -->
+  <script src="static/js/numinate.min.js"></script>
+  <!-- Slick JS -->
+  <script src="static/js/swiper.min.js"></script>
+  <!-- Magnific JS -->
+  <script src="static/js/jquery.magnific-popup.min.js"></script>
+  <!-- Circle Progress JS -->
+  <script src="static/js/circle-progress.js"></script>
+  <!-- countdown JS -->
+  <script src="static/js/jquery.countdown.min.js"></script>
+  <!-- AOS -->
+  <script src="static/js/aos.js"></script>
+  <!-- GSAP -->
+  <script src="static/js/gsap.js"></script>
+  <!-- Scroll Trigger -->
+  <script src="static/js/ScrollTrigger.js"></script>
+  <!-- Split Text -->
+  <script src="static/js/SplitText.js"></script>
+  <!-- Magnetic -->
+  <script src="static/js/magnetic.js"></script>
+  <!-- GSAP Animation -->
+  <script src="static/js/gsap-animation.js"></script>
+  <!-- Form Validator -->
+  <script src="static/js/jquery.validate.min.js"></script>
+  <!-- Scripts JS -->
+  <script src="static/js/scripts.js"></script>
+  <script>
+    (function () {
+      function c() {
+        var b = a.contentDocument || a.contentWindow.document;
+        if (b) {
+          var d = b.createElement("script");
+          d.innerHTML =
+            "window.__CF$cv$params={r:'8def318d6f8d686a',t:'MTczMTAwMjExOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+          b.getElementsByTagName("head")[0].appendChild(d);
+        }
+      }
+      if (document.body) {
+        var a = document.createElement("iframe");
+        a.height = 1;
+        a.width = 1;
+        a.style.position = "absolute";
+        a.style.top = 0;
+        a.style.left = 0;
+        a.style.border = "none";
+        a.style.visibility = "hidden";
+        document.body.appendChild(a);
+        if ("loading" !== document.readyState) c();
+        else if (window.addEventListener)
+          document.addEventListener("DOMContentLoaded", c);
+        else {
+          var e = document.onreadystatechange || function () { };
+          document.onreadystatechange = function (b) {
+            e(b);
+            "loading" !== document.readyState &&
+              ((document.onreadystatechange = e), c());
+          };
+        }
+      }
+    })();
+  </script>
+</body>
+
+</html>

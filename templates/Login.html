@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - GymPro Manager</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body class="login-page">
+    <div class="login-container">
+      <div class="login-box">
+        <h1>Login</h1>
+        <form action="/login" method="post">
+          <div class="login-input-group">
+            <label for="id_number">ID Number</label>
+            <input type="text" id="id_number" name="id_number" required />
+          </div>
+          <div class="login-input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <div class="button-group">
+            <button type="submit" class="login-btn">Login</button>
+          </div>
+          <div class="extra-links">
+            <p>
+              Don't have an account? <a href="/signup" class="link">Sign up</a>
+            </p>
+          </div>
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+          {% endif %} {% endwith %}
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

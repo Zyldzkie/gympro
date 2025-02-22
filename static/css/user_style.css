@@ -1,0 +1,681 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+
+header.dashboard-header {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header nav ul li {
+    margin-left: 0px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Sidebar container */
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding-top: 20px;
+}
+
+/* Sidebar list styling */
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Sidebar list items */
+.sidebar ul li {
+    margin: 0; /* Reset margin for consistent alignment */
+}
+
+/* Sidebar Links */
+.sidebar ul li a {
+    display: flex;
+    align-items: center;      /* Center icon and text vertically */
+    padding: 12px 20px;       /* Adjust padding for better alignment */
+    color: white;
+    text-decoration: none;
+}
+
+/* Icon Styling */
+.sidebar ul li a i {
+    margin-right: 15px;       /* Ensure consistent spacing */
+    min-width: 20px;          /* Fixed width for icons to align text consistently */
+    text-align: center;       /* Center icon if it's narrower */
+    font-size: 2em;
+}
+
+/* Active link highlighting */
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    background-color: #0b867e;
+}
+
+
+/* Dashboard Content */
+.dashboard-content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.user-id-card {
+    margin-bottom: 20px;
+}
+
+.id-card {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.id-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.id-details p {
+    margin: 0 0 10px;
+}
+
+.dashboard-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stats-item {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stats-item i {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #4caf50;
+    font-style: normal; /* Ensure stats icons are not italic */
+}
+
+
+/* Sidebar Icons */
+.sidebar a i {
+    font-style: normal; /* Ensure sidebar icons are not italic */
+    margin-right: 8px; /* Space between icon and text */
+    color: inherit; /* Matches text color */
+}
+
+/* Icons (Placeholder classes, replace with actual icon classes if using a library) */
+.icon-dashboard::before {
+    content: "\1F4C8"; /* Example icon */
+}
+
+.icon-calendar::before {
+    content: "\1F4C5"; /* Example calendar icon */
+}
+
+.icon-equipment::before {
+    content: "\1F527"; /* Example tool icon */
+}
+
+.icon-feedback::before {
+    content: "\1F4DD"; /* Example feedback icon */
+}
+
+.icon-notifications::before {
+    content: "\1F514"; /* Example notification icon */
+}
+
+.icon-settings::before {
+    content: "\2699"; /* Example settings icon */
+}
+
+.icon-users::before {
+    content: "\1F465"; /* Example members icon */
+}
+
+
+/* APPOINTMENTS PAGE */
+.appointments-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.appointments-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.appointments-section table th, 
+.appointments-section table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.appointments-section table th {
+    background-color: #4caf50;
+    color: white;
+}
+
+.appointments-section table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Icons (Placeholder classes, replace with actual icon classes if using a library) */
+.icon-dashboard::before {
+    content: "\1F4C8"; /* Example dashboard icon */
+}
+
+.icon-calendar::before {
+    content: "\1F4C5"; /* Example calendar icon */
+}
+
+.icon-equipment::before {
+    content: "\1F527"; /* Example tool icon */
+}
+
+.icon-feedback::before {
+    content: "\1F4DD"; /* Example feedback icon */
+}
+
+.icon-notifications::before {
+    content: "\1F514"; /* Example notification icon */
+}
+
+.icon-settings::before {
+    content: "\2699"; /* Example settings icon */
+}
+
+/* EQUIPMENTS PAGE*/
+/* Equipments Section */
+.equipments-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.equipments-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.equipments-section table th, 
+.equipments-section table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.equipments-section table th {
+    background-color: #4caf50;
+    color: white;
+}
+
+.equipments-section table tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* FEEDBACK PAGE */
+/* Feedback Section */
+.feedback-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.feedback-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.feedback-form textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none;
+}
+
+.feedback-form button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.feedback-form button:hover {
+    background-color: #45a049;
+}
+
+/* notifications.css */
+
+/* Notifications Section */
+.notifications-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* To match your other sections */
+}
+
+#userNotificationsList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#userNotificationsList li {
+    background-color: #f9f9f9; /* Light background for notifications */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+#userNotificationsList li:hover {
+    background-color: #e9ecef; /* Change color on hover */
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* General Notification Section Styling */
+.notifications-section {
+    width: 100%;
+}
+
+/* Search Bar Styling */
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.search-bar button:hover {
+    background-color: #0056b3;
+}
+
+/* General Notification List Style */
+#userNotificationsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+/* Notification Card Style */
+.notification-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+    border-left: 6px solid #007bff;
+}
+.notification-status-dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.notification-status-dot.unread {
+    background-color: #007bff;
+}
+
+.notification-status-dot.read {
+    background-color: #ccc;
+}
+
+.notification-status-dot.unread {
+    background-color: #007bff;
+}
+
+.notification-status-dot.read {
+    background-color: #ccc;
+}
+
+.notification-title {
+    font-weight: bold;
+    flex-grow: 1;
+    font-size: 1.2rem;
+}
+
+/* Dismiss Button Styling */
+.dismiss-button {
+    background: #28a745;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.dismiss-button:hover {
+    background-color: #218838;
+}
+
+/* Hover Effect for Cards */
+.notification-card:hover {
+    transform: scale(1.02);
+}
+
+/* No Notifications Message */
+.no-notifications .notification-card {
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #888;
+}
+
+/* APPOINTMENT */
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%; /* Make inputs full-width */
+}
+
+textarea {
+    resize: none; /* Prevent resizing */
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+/* EQUIPMENTS*/
+.equipments-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Responsive layout */
+    gap: 20px; /* Space between cards */
+    padding: 20px; /* Padding around the grid */
+}
+
+.equipment-card {
+    background-color: #f9f9f9; /* Light background for the card */
+    border: 1px solid #ddd; /* Border around the card */
+    border-radius: 8px; /* Rounded corners */
+    text-align: center; /* Center text and elements */
+    padding: 10px; /* Padding inside the card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    width: 220px; /* Fixed width for uniformity */
+    height: 250px; /* Fixed height for uniformity */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    margin: auto; /* Center the card within the grid item */
+}
+
+.equipment-card img {
+    width: 100px; /* Fixed width for images */
+    height: 100px; /* Fixed height for images */
+    object-fit: contain; /* Maintain aspect ratio */
+    border-radius: 4px; /* Rounded corners for images */
+    margin: 0 auto; /* Center image horizontally */
+}
+
+.borrow-button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px; /* Padding around text */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background change */
+    width: 100%; /* Full width of the card */
+}
+
+.borrow-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+.equipment-card h2 {
+    font-size: 1.2em; /* Adjust font size */
+    margin: 10px 0; /* Space above and below the name */
+    color: #333; /* Darker text color for better readability */
+}
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Notification Styles */
+.notifications-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#userNotificationsList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#userNotificationsList li {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+#userNotificationsList li i {
+    margin-right: 10px;
+    color: #4caf50;
+    font-size: 1.2em;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    color: #555;
+}
+
+/* Settings Page Specific Styles */
+
+/* Form Container */
+.settings-section form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 600px;
+}
+
+/* Form Labels with Icons */
+.settings-section form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    color: #333;
+}
+
+.settings-section form label i {
+    margin-right: 8px;
+    color: #4caf50;
+    font-size: 1.1em;
+}
+
+/* Input Fields */
+.settings-section form input[type="text"],
+.settings-section form input[type="password"],
+.settings-section form input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Submit Button */
+.settings-section form button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.settings-section form button:hover {
+    background-color: #45a049;
+}
+
+/* Section Headers */
+.settings-section h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Container Layout for Sections */
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

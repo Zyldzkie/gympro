@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+    <title>Feedback Management</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        {% include 'includes/adminsidebar.html'%}
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <header class="py-3">
+            <h1 class="display-6 text-dark">Feedback Management</h1>
+          </header>
+
+          <div class="card p-4">
+            <div class="table-responsive">
+              <table class="table table-striped" id="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Message</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for single_feedback in feedback %}
+                  <tr id="feedback-{{ single_feedback.id }}">
+                    <td>
+                      {{ single_feedback.user.firstname }} {{
+                      single_feedback.user.lastname }}
+                    </td>
+                    <td>{{ single_feedback.message }}</td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm delete-btn"
+                        data-feedback-id="{{ single_feedback.id }}"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <script>
+                $(document).on("click", ".delete-btn", function () {
+                  var feedbackId = $(this).data("feedback-id");
+
+                  $.ajax({
+                    url: "/deletefeedback",
+                    type: "POST",
+                    data: {
+                      feedback_id: feedbackId, // Send the feedback ID to the server
+                    },
+                    success: function (response) {
+                      if (response.success) {
+                        $("#feedback-" + feedbackId).remove();
+                        location.reload();
+                      } else {
+                        alert("Failed to delete feedback: " + response.error);
+                      }
+                    },
+                    error: function () {
+                      alert(
+                        "An error occurred while trying to delete the feedback."
+                      );
+                    },
+                  });
+                });
+              </script>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#table").DataTable();
+      });
+    </script>
+    <!-- Footer -->
+    <footer class="admin-footer">
+      <p>&copy; 2024 GymPro</p>
+    </footer>
+  </body>
+</html>

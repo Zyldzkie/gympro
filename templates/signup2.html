@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+{% include "includes/head.html" %}
+
+<body>
+  <!-- page wrapper -->
+  <div class="page-wrapper pbmit-bg-color-blackish">
+    <!-- Header Main Area -->
+    <header class="site-header header-style-1">
+      {% include "includes/nav.html" %}
+    </header>
+
+    <!-- Header Main Area End Here -->
+    <!-- Title Bar -->
+    <div class="pbmit-title-bar-wrapper">
+      <div class="container">
+        <div class="pbmit-title-bar-content">
+          <div class="pbmit-title-bar-content-inner">
+            <div class="pbmit-tbar">
+              <div class="pbmit-tbar-inner container">
+                <h1 class="pbmit-tbar-title">SIGN UP</h1>
+              </div>
+            </div>
+            <div class="pbmit-breadcrumb">
+              <div class="pbmit-breadcrumb-inner">
+                <span><a class="home" href="#" title=""><span>DorSU</span></a></span>
+                <span class="sep">//</span>
+                <span><span class="post-root post post-post current-item">SIGN UP</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Title Bar End-->
+    <!-- Contact Us Content -->
+    <div class="page-content">
+      <!-- Sign Up Form Start -->
+      <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+          filter: invert(1);
+        }
+
+        input[type="date"]::-moz-calendar-picker-indicator {
+          filter: invert(1);
+        }
+
+        input[type="date"]::-ms-calendar-picker-indicator {
+          filter: invert(1);
+        }
+
+        select.form-control {
+          padding: 0.5rem 1rem;
+        }
+
+        select.form-control option {
+          background-color: #fff;
+          color: #333;
+        }
+
+        select.form-control:focus {
+          border-color: #007bff;
+          outline: none;
+        }
+      </style>
+      <section class="contact-section">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-6">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+              <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="alert  alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+              {% endif %} {% endwith %}
+
+              <form action="/signup" class="contact-form" id="signup-form" method="POST">
+                <h4>CREATE YOUR ACCOUNT</h4>
+                <div class="row">
+                  <!-- First Name and Last Name fields -->
+                  <div class="col-md-6">
+                    <p>
+                      <input class="form-control" name="first_name" placeholder="First Name" required type="text" />
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      <input class="form-control" name="last_name" placeholder="Last Name" required type="text" />
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      <input class="form-control" name="email" placeholder="Email Account" required type="email" />
+                    </p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <p>
+                      <input class="form-control" name="date_of_birth" placeholder="Date of Birth (dd/mm/yyyy)" required
+                        type="date" />
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="position-relative">
+                      <input class="form-control" id="password" name="password" placeholder="Password" required
+                        type="password" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}"
+                        title="Must be at least 8 characters, including one uppercase letter and one special character." />
+                      <span class="fa fa-eye position-absolute" id="togglePassword" style="
+                                              cursor: pointer;
+                                              top: 50%;
+                                              right: 10px;
+                                              transform: translateY(-50%);
+                                            "></span>
+                    </p>
+                  </div>
+
+                  <div class="col-md-6">
+                    <p class="position-relative">
+                      <input class="form-control" id="confirm_password" name="confirm_password"
+                        placeholder="Retype Password" required type="password" />
+                      <span class="fa fa-eye position-absolute" id="toggleConfirmPassword" style="
+                            cursor: pointer;
+                            top: 50%;
+                            right: 10px;
+                            transform: translateY(-50%);
+                          "></span>
+                    </p>
+                  </div>
+
+                  <!-- Include Font Awesome -->
+                  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+                    rel="stylesheet" />
+
+                  <script>
+                    // Toggle password visibility
+                    document
+                      .getElementById("togglePassword")
+                      .addEventListener("click", function () {
+                        const passwordInput =
+                          document.getElementById("password");
+                        const type =
+                          passwordInput.type === "password"
+                            ? "text"
+                            : "password";
+                        passwordInput.type = type;
+
+                        // Toggle the eye / eye-slash icon
+                        this.classList.toggle("fa-eye-slash");
+                      });
+
+                    document
+                      .getElementById("toggleConfirmPassword")
+                      .addEventListener("click", function () {
+                        const confirmPasswordInput =
+                          document.getElementById("confirm_password");
+                        const type =
+                          confirmPasswordInput.type === "password"
+                            ? "text"
+                            : "password";
+                        confirmPasswordInput.type = type;
+
+                        // Toggle the eye / eye-slash icon
+                        this.classList.toggle("fa-eye-slash");
+                      });
+                  </script>
+
+                  <!--  Gender fields -->
+
+                  <div class="col-md-6">
+                    <p>
+                      <select class="form-control" name="gender" required>
+                        <option value="">Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      <input class="form-control" name="contact_no" placeholder="Contact Number" required value="+63"
+                        type="tel" pattern="+639\d{9}"
+                        oninput="this.value = '+63' + this.value.slice(3).replace(/[^0-9]/g, '').slice(0, 10)" />
+                    </p>
+                  </div>
+
+                  <!-- Submit button -->
+                  <div class="col-md-12">
+                    <button class="pbmit-btn pbmit-btn-white pbmit-submit-btn" type="submit">
+                      <i class="form-btn-loader fa fa-circle-o-notch fa-spin fa-fw margin-bottom d-none"></i>
+                      <span class="button-text">Sign Up</span>
+                    </button>
+                  </div>
+                  <div class="col-md-12 col-lg-12 message-status"></div>
+                </div>
+                <script>
+                  // Client-side password match validation
+                  const password = document.getElementById("password");
+                  const confirm_password =
+                    document.getElementById("confirm_password");
+                  confirm_password.addEventListener("input", () => {
+                    if (password.value !== confirm_password.value) {
+                      confirm_password.setCustomValidity(
+                        "Passwords do not match."
+                      );
+                    } else {
+                      confirm_password.setCustomValidity("");
+                    }
+                  });
+                </script>
+              </form>
+
+              <!-- Login link -->
+              <div class="col-lg-12 text-center mt-3">
+                <p>Already have an account? <a href="/login">Login</a></p>
+              </div>
+              <div class="container mt-5 text-center">
+                <p>
+                  Before signing up, you agree to our
+                  <a href="#" id="terms">Terms and Conditions</a>.
+                </p>
+              </div>
+              <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+              <script>
+                document
+                  .getElementById("terms")
+                  .addEventListener("click", function () {
+                    Swal.fire({
+                      title: "Terms and Conditions",
+                      html: `
+                        <div style="text-align: left;">
+                          <p><strong>Welcome to ROSU Wellness Center!</strong></p>
+                          <p>By booking an appointment or scheduling material use, you agree to the following terms:</p>
+                          <ul>
+                            <li>All appointments must be confirmed at least 24 hours prior to the scheduled time.</li>
+                            <li>Late arrivals exceeding 15 minutes may result in rescheduling or cancellation.</li>
+                            <li>Materials borrowed during appointments must be returned in their original condition.</li>
+                            <li>Cancellations must be made at least 12 hours before the appointment to avoid a cancellation fee.</li>
+                            <li>The center reserves the right to update terms without prior notice.</li>
+                          </ul>
+                          <p>For more details, contact us at <a href="mailto:info@rosuwellness.com">info@rosuwellness.com</a>.</p>
+                        </div>
+                      `,
+                      icon: "info",
+                      confirmButtonText: "Close",
+                      width: "50%",
+                    });
+                  });
+              </script>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Sign Up Form End -->
+    </div>
+    <!-- Contact Us Content End -->
+    {% include "includes/footer.html" %}
+  </div>
+  <!-- Page Wrapper End -->
+  <!-- Search Box Start Here -->
+  <div class="pbmit-search-overlay">
+    <div class="pbmit-icon-close"></div>
+    <div class="pbmit-search-outer">
+      <form class="pbmit-site-searchform">
+        <input class="form-control field searchform-s" name="s" placeholder="Search …" type="search" />
+        <button type="submit">
+          <i class="pbmit-base-icon-search-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- Search Box End Here -->
+  <!-- Scroll To Top -->
+  <div class="pbmit-progress-wrap">
+    <svg class="pbmit-progress-circle svg-content" height="100%" viewbox="-1 -1 102 102" width="100%">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
+    </svg>
+  </div>
+  <!-- Scroll To Top End -->
+  <!-- JS 
+      ============================================ -->
+  <!-- jQuery JS -->
+  <script data-cfasync="false" src="static/js/email-decode.min.js"></script>
+  <script src="static/js/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="static/js/popper.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="static/js/bootstrap.min.js"></script>
+  <!-- jquery Waypoints JS -->
+  <script src="static/js/jquery.waypoints.min.js"></script>
+  <!-- jquery Appear JS -->
+  <script src="static/js/jquery.appear.js"></script>
+  <!-- Numinate JS -->
+  <script src="static/js/numinate.min.js"></script>
+  <!-- Slick JS -->
+  <script src="static/js/swiper.min.js"></script>
+  <!-- Magnific JS -->
+  <script src="static/js/jquery.magnific-popup.min.js"></script>
+  <!-- Circle Progress JS -->
+  <script src="static/js/circle-progress.js"></script>
+  <!-- countdown JS -->
+  <script src="static/js/jquery.countdown.min.js"></script>
+  <!-- AOS -->
+  <script src="static/js/aos.js"></script>
+  <!-- GSAP -->
+  <script src="static/js/gsap.js"></script>
+  <!-- Scroll Trigger -->
+  <script src="static/js/ScrollTrigger.js"></script>
+  <!-- Split Text -->
+  <script src="static/js/SplitText.js"></script>
+  <!-- Magnetic -->
+  <script src="static/js/magnetic.js"></script>
+  <!-- GSAP Animation -->
+  <script src="static/js/gsap-animation.js"></script>
+  <!-- Form Validator -->
+  <script src="static/js/jquery.validate.min.js"></script>
+  <!-- Scripts JS -->
+  <script src="static/js/scripts.js"></script>
+  <script>
+    (function () {
+      function c() {
+        var b = a.contentDocument || a.contentWindow.document;
+        if (b) {
+          var d = b.createElement("script");
+          d.innerHTML =
+            "window.__CF$cv$params={r:'8def318d6f8d686a',t:'MTczMTAwMjExOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+          b.getElementsByTagName("head")[0].appendChild(d);
+        }
+      }
+      if (document.body) {
+        var a = document.createElement("iframe");
+        a.height = 1;
+        a.width = 1;
+        a.style.position = "absolute";
+        a.style.top = 0;
+        a.style.left = 0;
+        a.style.border = "none";
+        a.style.visibility = "hidden";
+        document.body.appendChild(a);
+        if ("loading" !== document.readyState) c();
+        else if (window.addEventListener)
+          document.addEventListener("DOMContentLoaded", c);
+        else {
+          var e = document.onreadystatechange || function () { };
+          document.onreadystatechange = function (b) {
+            e(b);
+            "loading" !== document.readyState &&
+              ((document.onreadystatechange = e), c());
+          };
+        }
+      }
+    })();
+  </script>
+</body>
+
+</html>

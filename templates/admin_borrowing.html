@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <title>Borrowing Management</title>
+
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'includes/adminsidebar.html' %}
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert alert-success" id="success-alert" role="alert">
+          <strong>Success!</strong>
+          {% for category, message in messages %}
+          {{ message }}
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <header class="py-3">
+          <h1 class="display-6 text-dark">Borrowing Management</h1>
+        </header>
+
+        <div class="card p-4">
+          <!-- Borrowing Table with Actions and Status Column -->
+          <div class="borrowing-table">
+            <table id="borrowingDataTable" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Member Name</th>
+                  <th>Equipment Name</th>
+                  <th>Date Borrowed</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody id="borrowingsList">
+                {% for borrow in borrowings %}
+                <tr id="borrowingRow_{{ borrow.id }}">
+                  <td>{{ borrow.member_name }}</td>
+                  <td>{{ borrow.inventory.name }}</td>
+                  <td>
+                    {% if borrow.borrow_date %}
+                    {{ borrow.borrow_date.strftime('%Y-%m-%d') }}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                  </td>
+                  <td>{{ borrow.return_date.strftime('%Y-%m-%d') }}</td>
+                  <td>{{ borrow.status }}</td>
+                  <td>
+                    <form action="/borrowactions" method="POST" class="borrow-form">
+                      <input hidden type="text" name="borrow_id" value="{{ borrow.id }}" />
+                      <input hidden type="text" name="user_id" value="{{ borrow.user_id }}" />
+
+                      <select class="form-select" name="status" id="statusSelect_{{ borrow.id }}">
+                        <option value="pending">Pending</option>
+                        <option value="accepted" {% if borrow.status=="accepted" %} selected {% endif %}>Accepted
+                        </option>
+                        <option value="returned" {% if borrow.status=="returned" %} selected {% endif %}>Returned
+                        </option>
+                        <!-- <option value="notify">Send Notification</option> -->
+                      </select>
+                      <input type="hidden" name="booking_id" value="{{ borrow.id }}">
+                      <button type="button" class="btn btn-danger delete-borrowing w-100 mt-2"
+                        data-id="{{ borrow.id }}">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                  // Get all select elements with class .form-select
+                  document.querySelectorAll(".form-select").forEach(function (select) {
+                    // Add change event listener to each select
+                    select.addEventListener("change", function () {
+                      // Submit the form containing the select element
+                      this.closest("form").submit();
+                    });
+                  });
+
+                  document.querySelectorAll(".delete-borrowing").forEach(button => {
+                    button.addEventListener("click", function () {
+                      const borrowId = this.getAttribute("data-id");
+                      if (confirm("Are you sure you want to delete this borrowing record?")) {
+                        fetch(`/delete_borrowing/${borrowId}`, {
+                          method: "DELETE",
+                        })
+                          .then(response => response.json())
+                          .then(data => {
+                            if (data.success) {
+                              document.getElementById(`borrowingRow_${borrowId}`).remove();
+                            } else {
+                              alert(data.message || "Error deleting borrowing record");
+                            }
+                          });
+                      }
+                    });
+                  });
+                });
+              </script>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer class="admin-footer">
+    <p>&copy; 2024 GymPro</p>
+  </footer>
+
+  <!-- Add DataTables and Bootstrap JS libraries -->
+
+  <script>
+    $(document).ready(function () {
+      $("#borrowingDataTable").DataTable();
+    });
+
+  </script>
+</body>
+
+</html>
