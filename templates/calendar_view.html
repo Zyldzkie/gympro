@@ -54,6 +54,10 @@
     .form-container {
       margin-top: 20px;
     }
+
+    .weekend-day {
+      background-color: #ffebee !important;
+    }
   </style>
 
 
@@ -73,6 +77,12 @@
         allDaySlot: false,
         height: 'auto',
         expandRows: true,
+        dayCellClassNames: function(arg) {
+          if (arg.date.getDay() === 0 || arg.date.getDay() === 6) {
+            return ['weekend-day'];
+          }
+          return [];
+        },
         businessHours: [
           {
             daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
