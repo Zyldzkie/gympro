@@ -1041,26 +1041,27 @@ def book_appointment():
         flash("Please log in first.", "danger")
         return redirect(url_for("calendar_view"))
 
-    # Determine the appropriate start time for storage (optional)
+    # Check total bookings for the selected date and time period
     if timeslot == "morning":
         chosen_time = datetime.strptime("08:00:00", "%H:%M:%S").time()
-        # Check how many morning bookings
-        morning_count = Booking.query.filter_by(
+        booking_count = Booking.query.filter_by(
             appointment_date=dateutil.parser.parse(appointment_date).date()
         ).filter(Booking.appointment_time < datetime.strptime("12:00:00", "%H:%M:%S").time()).count()
-        if morning_count >= 15:
-            flash("Morning slot fully booked (max 15).", "danger")
+        
+        if booking_count >= 15:
+            flash("Sorry, all morning slots are fully booked. Please select another time or date.", "danger")
             return redirect(url_for("calendar_view"))
     else:  # afternoon
         chosen_time = datetime.strptime("13:00:00", "%H:%M:%S").time()
-        # Check how many afternoon bookings
-        afternoon_count = Booking.query.filter_by(
+        booking_count = Booking.query.filter_by(
             appointment_date=dateutil.parser.parse(appointment_date).date()
         ).filter(Booking.appointment_time >= datetime.strptime("13:00:00", "%H:%M:%S").time()).count()
-        if afternoon_count >= 15:
-            flash("Afternoon slot fully booked (max 15).", "danger")
+        
+        if booking_count >= 15:
+            flash("Sorry, all afternoon slots are fully booked. Please select another time or date.", "danger")
             return redirect(url_for("calendar_view"))
 
+    # Check if user already has a booking for this date and time
     already_booked = Booking.query.filter_by(
         member_name=user_id,
         appointment_date=dateutil.parser.parse(appointment_date).date(),
