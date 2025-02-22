@@ -1342,7 +1342,6 @@ def get_bookings():
         start_dt = datetime.combine(booking.appointment_date, booking.appointment_time)
         hour = start_dt.hour
 
-        # Only include bookings within allowed time ranges
         if (8 <= hour < 12) or (13 <= hour < 16):
             period = '8am-11am' if hour < 12 else '1pm-4pm'
             booking_counts[(booking.appointment_date, period)] += 1
@@ -1357,14 +1356,13 @@ def get_bookings():
         background_color = '#f08080' if available_slots == 0 else '#90ee90'
 
         events.append({
-            'title': f'{period} Slots ({count}/{max_slots})',
+            'title': f'{period}: {available_slots} slots left',
             'start': start_dt.isoformat(),
             'end': end_dt.isoformat(),
             'backgroundColor': background_color,
             'borderColor': background_color,
             'display': 'block'
         })
-        print(f"Date: {date}, Period: {period}, Count: {count}, Available Slots: {available_slots}")
 
     return jsonify(events)
 
