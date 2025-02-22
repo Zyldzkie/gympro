@@ -162,6 +162,36 @@
         closeBorrowModal();
       }
     });
+
+    $(document).ready(function() {
+        $(".return-btn").click(function() {
+            const borrowingId = $(this).data("id");
+            const isCancel = $(this).data("cancel");
+            
+            $.ajax({
+                url: "/returnitem",
+                method: "POST",
+                data: {
+                    id: borrowingId,
+                    cancel: isCancel
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Update the quantity display immediately
+                        const quantityElement = $(`#quantity-${response.equipment_id}`);
+                        if (quantityElement.length) {
+                            quantityElement.text(response.new_quantity);
+                        }
+                        // Refresh the page to update all states
+                        location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Error returning equipment: " + error);
+                }
+            });
+        });
+    });
   </script>
 </body>
 

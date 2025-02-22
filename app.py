@@ -387,73 +387,35 @@ def otp():
 @app.route("/returnitem", methods=["POST"])
 def returnitem():
     borrowing_id = request.form.get("id")
-    cancel = request.form.get("cancel", "false").lower() == "true"
-
-    print(f"Received borrowing ID: {borrowing_id}, Cancel: {cancel}")
-
+    is_cancel = request.form.get("cancel") == "true"
+    
     borrowing = EquipmentBorrowing.query.get(borrowing_id)
-
+    
     if borrowing:
-        if cancel:
-
-            result = db.session.execute(
-                text("SELECT quantity FROM inventory WHERE id = :id"),
-                {"id": borrowing.equipment_id},
-            )
-            quantity = result.fetchone()[0]
-
-            if quantity is not None:
-                new_quantity = quantity + 1
-                db.session.execute(
-                    text("UPDATE inventory SET quantity = :quantity WHERE id = :id"),
-                    {"quantity": new_quantity, "id": borrowing.equipment_id},
-                )
-
-            db.session.delete(borrowing)
-            db.session.commit()
-
-            flash("Borrowing record canceled successfully!", "success")
-            return jsonify(
-                {
-                    "message": "Borrowing record canceled successfully",
-                    "borrowing_id": borrowing_id,
-                }
-            )
-        else:
-
-            borrowing.status = "returned"
+        equipment = Inventory.query.get(borrowing.equipment_id)
+        if equipment:
+            if is_cancel:
+                borrowing.status = "cancelled"
+            else:
+                borrowing.status = "returned"
             borrowing.return_date = datetime.utcnow()
-
-            result = db.session.execute(
-                text("SELECT quantity FROM inventory WHERE id = :id"),
-                {"id": borrowing.equipment_id},
-            )
-            quantity = result.fetchone()[0]
-
-            if quantity is not None:
-                new_quantity = quantity + 1
-                db.session.execute(
-                    text("UPDATE inventory SET quantity = :quantity WHERE id = :id"),
-                    {"quantity": new_quantity, "id": borrowing.equipment_id},
-                )
-
-            db.session.commit()
-
-            flash("Borrowing record updated successfully!", "success")
-            return jsonify(
-                {
-                    "message": "Borrowing record updated successfully",
-                    "borrowing_id": borrowing_id,
-                }
-            )
-    else:
-        flash("Borrowing record not found", "error")
-        return (
-            jsonify(
-                {"message": "Borrowing record not found", "borrowing_id": borrowing_id}
-            ),
-            404,
-        )
+            
+            # Increment the equipment quantity
+            equipment.quantity += 1
+            
+            try:
+                db.session.commit()
+                return jsonify({
+                    "success": True,
+                    "message": "Equipment returned successfully",
+                    "equipment_id": equipment.id,
+                    "new_quantity": equipment.quantity
+                })
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({"success": False, "error": str(e)}), 500
+    
+    return jsonify({"success": False, "error": "Borrowing record not found"}), 404
 
 
 @app.route("/admin/data")
@@ -1205,8 +1167,6 @@ def borrow_actions():
 
     if borrowing_record:
         message = ""
-
-        # Ensure borrowing_record.inventory exists before accessing its name
         inventory_name = borrowing_record.inventory.name if borrowing_record.inventory else "Unknown Item"
 
         if status == "accepted":
@@ -1215,6 +1175,9 @@ def borrow_actions():
 
         elif status == "returned":
             borrowing_record.status = "returned"
+            # Increment the inventory quantity when item is returned
+            if borrowing_record.inventory:
+                borrowing_record.inventory.quantity += 1
             message = f"Your borrowed item '{inventory_name}' has been returned successfully. Ensure you bring your receipt from the cashier when coming to the gym for access or equipment."
 
         elif (
@@ -1230,8 +1193,13 @@ def borrow_actions():
             )
             db.session.add(notification)
 
-        db.session.commit()
-        flash("Borrowing record updated and user notified successfully.", "success")
+        try:
+            db.session.commit()
+            flash("Borrowing record updated and user notified successfully.", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Error updating record: {str(e)}", "error")
+
     else:
         flash("Borrowing record not found.", "error")
 
