@@ -6,58 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Appointment Calendar - GymPro</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" />
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-  
   <style>
-    :root {
-      --primary-color: #0c0920;
-      --accent-color: #ff4444;
-      --success-color: #90ee90;
-      --text-light: #ffffff;
-    }
-
-    .fc-toolbar-title {
-      color: var(--primary-color);
-      font-weight: bold;
-    }
-
-    .fc-button-primary {
-      background-color: var(--primary-color) !important;
-      border-color: var(--primary-color) !important;
-    }
-
-    .fc-day-today {
-      background-color: rgba(12, 9, 32, 0.1) !important;
-    }
-
-    .fc-event {
-      border: none !important;
-      padding: 3px !important;
-    }
-
-    .fc-event.available {
-      background-color: var(--success-color) !important;
-    }
-
-    .fc-event.full {
-      background-color: var(--accent-color) !important;
-    }
-
-    .modal-header {
-      background-color: var(--primary-color);
-      color: var(--text-light);
-    }
-
-    .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-
-    .btn-primary:hover {
-      background-color: #1a1245;
-      border-color: #1a1245;
-    }
-
     .calendar-container {
       margin-top: 20px;
     }
@@ -107,8 +56,11 @@
     }
   </style>
 
+
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+
+    document.addEventListener('DOMContentLoaded', function () {
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
         headerToolbar: {
@@ -117,44 +69,34 @@
           right: 'dayGridMonth'
         },
         initialView: 'dayGridMonth',
-        hiddenDays: [0, 6], // Hide Saturday and Sunday
+        hiddenDays: ["Saturday", "Sunday"], // Hide weekends
+        allDaySlot: false,
         height: 'auto',
         expandRows: true,
         businessHours: [
           {
-            daysOfWeek: [1, 2, 3, 4, 5], // Monday to Friday
+            daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
             startTime: '08:00',
             endTime: '12:00',
           },
           {
-            daysOfWeek: [1, 2, 3, 4, 5],
+            daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
             startTime: '13:00',
             endTime: '16:00',
           }
         ],
         selectConstraint: 'businessHours',
-        events: '/get_bookings',
+        events: '/get_bookings', // Add this endpoint to fetch bookings
         eventDisplay: 'block',
-        eventDidMount: function(info) {
-          // Add custom styling based on availability
-          if (info.event.extendedProps.available) {
-            info.el.classList.add('available');
-          } else {
-            info.el.classList.add('full');
-          }
-        },
-        dateClick: function(info) {
-          // Check if it's a past date
-          if (info.date < new Date()) {
-            alert('Cannot book appointments for past dates');
-            return;
-          }
+        eventColor: '#f08080',
+        dateClick: function (info) {
           document.getElementById("appointment_date").value = info.dateStr;
           $('#bookingModal').modal('show');
         }
       });
       calendar.render();
     });
+
   </script>
 </head>
 
@@ -195,7 +137,13 @@
         <!-- Calendar Section -->
         <h2 class="text-center">Real-Time Appointment Calendar</h2>
 
+
+
+
+
         <div id='calendar'></div>
+
+
 
       </div>
     </div>

@@ -12,93 +12,27 @@
 
   <title>Admin Calendar</title>
   <style>
-    :root {
-      --primary-color: #0c0920;
-      --accent-color: #ff4444;
-      --success-color: #90ee90;
-      --text-light: #ffffff;
-    }
-
-    .fc-toolbar {
-      background-color: var(--primary-color);
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-
-    .fc-toolbar h2 {
-      color: var(--text-light);
-    }
-
-    .fc-button {
-      background-color: transparent !important;
-      border-color: var(--text-light) !important;
-      color: var(--text-light) !important;
-    }
-
-    .fc-button:hover {
-      background-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .fc-day-header {
-      background-color: var(--primary-color);
-      color: var(--text-light);
-      padding: 10px !important;
-    }
-
-    .fc-event {
-      border: none !important;
-      padding: 5px !important;
-    }
-
-    .bg-light-success {
-      background-color: var(--success-color) !important;
-      color: var(--primary-color) !important;
-    }
-
-    .bg-light-danger {
-      background-color: var(--accent-color) !important;
-      color: var(--text-light) !important;
-    }
-
-    .modal-header {
-      background-color: var(--primary-color);
-      color: var(--text-light);
-    }
-
-    .btn-info {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-
-    .btn-danger {
-      background-color: var(--accent-color);
-      border-color: var(--accent-color);
-    }
-
-    .badge {
-      padding: 0.5em 1em;
-    }
-
-    .badge.bg-warning {
-      background-color: #ffc107 !important;
-      color: var(--primary-color);
-    }
-
-    .badge.bg-success {
-      background-color: var(--success-color) !important;
-      color: var(--primary-color);
-    }
-
-    .badge.bg-danger {
-      background-color: var(--accent-color) !important;
-      color: var(--text-light);
-    }
-
     .fc-title {
       color: black;
       cursor: pointer;
       /* Make the appointment count clickable */
+    }
+
+    .bg-light-danger {
+      background-color: #f8d7da !important;
+      color: #721c24;
+    }
+
+    .bg-light-success {
+      background-color: #d4edda !important;
+      color: #155724;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .badge {
+      padding: 0.5em 0.8em;
+      font-size: 0.85em;
     }
 
     .btn-group .btn {
@@ -114,7 +48,6 @@
       width: 100% !important;
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
