@@ -1001,58 +1001,40 @@ def calendar_view():
     )
 
 
-@app.route("/book_appointment", methods=["POST"])
+@app.route('/book_appointment', methods=['POST'])
 def book_appointment():
-    appointment_date = request.form.get("appointment_date")
-    timeslot = request.form.get("appointment_time")  # 'morning' or 'afternoon'
-    user_id = session.get("user_id")
-    if not user_id:
-        flash("Please log in first.", "danger")
-        return redirect(url_for("calendar_view"))
-
-    # Check total bookings for the selected date and time period
-    if timeslot == "morning":
-        chosen_time = datetime.strptime("08:00:00", "%H:%M:%S").time()
-        booking_count = Booking.query.filter_by(
-            appointment_date=dateutil.parser.parse(appointment_date).date()
-        ).filter(Booking.appointment_time < datetime.strptime("12:00:00", "%H:%M:%S").time()).count()
+    date = request.form.get('appointment_date')
+    time = request.form.get('appointment_time')
+    
+    # Convert time string to datetime.time object
+    appointment_time = datetime.strptime(time, '%H:%M').time()
+    appointment_date = datetime.strptime(date, '%Y-%m-%d').date()
+    
+    # Count existing bookings for this time slot
+    existing_bookings = Booking.query.filter_by(
+        appointment_date=appointment_date,
+        appointment_time=appointment_time
+    ).count()
+    
+    # Check if slot is full (30 is max slots)
+    if existing_bookings >= 30:
+        flash('This time slot is already full. Please select another time.', 'danger')
+        return redirect(url_for('book_now'))
         
-        if booking_count >= 15:
-            flash("Sorry, all morning slots are fully booked. Please select another time or date.", "danger")
-            return redirect(url_for("calendar_view"))
-    else:  # afternoon
-        chosen_time = datetime.strptime("13:00:00", "%H:%M:%S").time()
-        booking_count = Booking.query.filter_by(
-            appointment_date=dateutil.parser.parse(appointment_date).date()
-        ).filter(Booking.appointment_time >= datetime.strptime("13:00:00", "%H:%M:%S").time()).count()
-        
-        if booking_count >= 15:
-            flash("Sorry, all afternoon slots are fully booked. Please select another time or date.", "danger")
-            return redirect(url_for("calendar_view"))
-
-    # Check if user already has a booking for this date and time
-    already_booked = Booking.query.filter_by(
-        member_name=user_id,
-        appointment_date=dateutil.parser.parse(appointment_date).date(),
-        appointment_time=chosen_time
-    ).first()
-
-    if already_booked:
-        flash("You already have a booking for that date and time!", "danger")
-        return redirect(url_for("calendar_view"))
-
-    # Store new booking
-    new_booking = Booking(
-        member_name=user_id,
-        appointment_date=dateutil.parser.parse(appointment_date).date(),
-        appointment_time=chosen_time,
-        status="accepted",
+    # Continue with booking creation if slots are available
+    booking = Booking(
+        member_name=session['user_id'],
+        contact_number=request.form.get('contact_number'),
+        appointment_date=appointment_date,
+        appointment_time=appointment_time,
+        message=request.form.get('message')
     )
-    db.session.add(new_booking)
+    
+    db.session.add(booking)
     db.session.commit()
-
-    flash("Appointment successfully booked!", "success")
-    return redirect(url_for("calendar_view"))
+    
+    flash('Appointment booked successfully!', 'success')
+    return redirect(url_for('user_dashboard'))
 
 
 @app.route("/user/borrow_equipment", methods=["POST"])
@@ -1314,20 +1296,36 @@ def get_bookings():
     events = []
     booking_counts = defaultdict(int)
 
+    # Define time slots
+    time_slots = [
+        ('8am', '10am'),
+        ('10am', '12pm'),
+        ('1pm', '3pm'),
+        ('3pm', '5pm'),
+        ('5pm', '7pm')
+    ]
+
     for booking in bookings:
         start_dt = datetime.combine(booking.appointment_date, booking.appointment_time)
         hour = start_dt.hour
 
-        if (8 <= hour < 12) or (13 <= hour < 16):
-            period = '8am-11am' if hour < 12 else '1pm-4pm'
-            booking_counts[(booking.appointment_date, period)] += 1
+        # Determine which time slot this booking belongs to
+        for start_time, end_time in time_slots:
+            start_hour = datetime.strptime(start_time, '%I%p').time().hour
+            end_hour = datetime.strptime(end_time, '%I%p').time().hour
+            
+            if start_hour <= hour < end_hour:
+                period = f'{start_time}-{end_time}'
+                booking_counts[(booking.appointment_date, period)] += 1
+                break
 
+    # Create events for each time slot
     for (date, period), count in booking_counts.items():
         start_time, end_time = period.split('-')
         start_dt = datetime.combine(date, datetime.strptime(start_time, '%I%p').time())
         end_dt = datetime.combine(date, datetime.strptime(end_time, '%I%p').time())
 
-        max_slots = 15
+        max_slots = 30
         available_slots = max_slots - count
         background_color = '#f08080' if available_slots == 0 else '#90ee90'
 
