@@ -38,6 +38,13 @@ STATIC_FOLDER = os.path.join(APP_ROOT, "static")
 
 db = SQLAlchemy(app)
 
+@app.context_processor
+def inject_user():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        return dict(user=user)
+    return dict(user=None)
+
 
 class Feedback(db.Model):
     __tablename__ = "feedback"
