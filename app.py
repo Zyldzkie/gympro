@@ -1016,10 +1016,12 @@ def book_appointment():
         appointment_time=appointment_time
     ).count()
     
-    # Check if slot is full (30 is max slots)
+    # Check if slot is full (30 is max slots per time slot)
     if existing_bookings >= 30:
-        flash('This time slot is already full. Please select another time.', 'danger')
-        return redirect(url_for('book_now'))
+        return jsonify({
+            'success': False,
+            'message': 'This time slot is already full. Please select another time.'
+        }), 400
         
     # Continue with booking creation if slots are available
     booking = Booking(
@@ -1033,8 +1035,10 @@ def book_appointment():
     db.session.add(booking)
     db.session.commit()
     
-    flash('Appointment booked successfully!', 'success')
-    return redirect(url_for('user_dashboard'))
+    return jsonify({
+        'success': True,
+        'message': 'Appointment booked successfully!'
+    })
 
 
 @app.route("/user/borrow_equipment", methods=["POST"])
