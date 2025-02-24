@@ -1059,34 +1059,44 @@ def submit_borrow_request():
     if "user_id" not in session:
         flash("Please log in to borrow equipment.", "error")
         return redirect(url_for("login"))
-
+    
     user_id = session["user_id"]
     equipment_id = request.form.get("equipment_id")
     return_date = request.form.get("return_date")
 
     result = db.session.execute(
-        text("SELECT quantity FROM inventory WHERE id = :id"), {"id": equipment_id}
+        text("SELECT quantity, name FROM inventory WHERE id = :id"), {"id": equipment_id}
     )
-    quantity = result.fetchone()[0]
+    equipment_info = result.fetchone()
+    quantity = equipment_info[0]
+    equipment_name = equipment_info[1]
 
     if quantity is None or quantity <= 0:
         flash("Equipment is out of stock!", "error")
         return redirect(url_for("user_equipments"))
 
     new_quantity = quantity - 1
-
     db.session.execute(
         text("UPDATE inventory SET quantity = :quantity WHERE id = :id"),
         {"quantity": new_quantity, "id": equipment_id},
     )
+    
     new_borrowing = EquipmentBorrowing(
         user_id=user_id,
         equipment_id=equipment_id,
         return_date=datetime.strptime(return_date, "%Y-%m-%d"),
     )
     db.session.add(new_borrowing)
+    
+    # Add notification
+    notification = Notification(
+        user_id=user_id,
+        message=f"Equipment borrowing request submitted: {equipment_name} until {return_date}",
+        seen=False
+    )
+    db.session.add(notification)
+    
     db.session.commit()
-
     flash("Borrow request submitted successfully!", "success")
     return redirect(url_for("user_equipments"))
 
