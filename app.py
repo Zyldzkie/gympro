@@ -1011,42 +1011,47 @@ def calendar_view():
 
 @app.route('/book_appointment', methods=['POST'])
 def book_appointment():
-    date = request.form.get('appointment_date')
-    time = request.form.get('appointment_time')
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'message': 'Please log in first'})
     
-    # Convert time string to datetime.time object
-    appointment_time = datetime.strptime(time, '%H:%M').time()
-    appointment_date = datetime.strptime(date, '%Y-%m-%d').date()
-    
-    # Count existing bookings for this time slot
-    existing_bookings = Booking.query.filter_by(
-        appointment_date=appointment_date,
-        appointment_time=appointment_time
-    ).count()
-    
-    # Check if slot is full (30 is max slots per time slot)
-    if existing_bookings >= 30:
+    try:
+        user = User.query.get(session['user_id'])
+        appointment_date = request.form.get('appointment_date')
+        appointment_time = request.form.get('appointment_time')
+        
+        # Create the booking
+        booking = Booking(
+            member_name=session['user_id'],
+            contact_number=user.contact_number,
+            appointment_date=datetime.strptime(appointment_date, '%Y-%m-%d').date(),
+            appointment_time=datetime.strptime(appointment_time, '%H:%M').time(),
+            status='pending'
+        )
+        
+        db.session.add(booking)
+        
+        # Create notification for the booking
+        notification_message = f"New appointment booked for {appointment_date} at {datetime.strptime(appointment_time, '%H:%M').strftime('%I:%M %p')}"
+        notification = Notification(
+            user_id=session['user_id'],
+            message=notification_message,
+            seen=False
+        )
+        
+        db.session.add(notification)
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Appointment booked successfully!'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
         return jsonify({
             'success': False,
-            'message': 'This time slot is already full. Please select another time.'
-        }), 400
-        
-    # Continue with booking creation if slots are available
-    booking = Booking(
-        member_name=session['user_id'],
-        contact_number=request.form.get('contact_number'),
-        appointment_date=appointment_date,
-        appointment_time=appointment_time,
-        message=request.form.get('message')
-    )
-    
-    db.session.add(booking)
-    db.session.commit()
-    
-    return jsonify({
-        'success': True,
-        'message': 'Appointment booked successfully!'
-    })
+            'message': f'Error booking appointment: {str(e)}'
+        })
 
 
 @app.route("/user/borrow_equipment", methods=["POST"])
