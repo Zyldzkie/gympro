@@ -274,6 +274,16 @@ def signup():
 
             db.session.add(new_user)
             db.session.commit()
+
+            # Create notification for new user registration
+            notification = Notification(
+                user_id=new_user.id,
+                message=f"New user registration: {firstname} {lastname} has signed up.",
+                seen=False
+            )
+            db.session.add(notification)
+            db.session.commit()
+
             flash("Account created successfully!", "success")
 
             otp = str(random.randint(100000, 999999))
