@@ -94,8 +94,6 @@
                               <th>Email</th>
                               <th>Contact Number</th>
                               <th>Time</th>
-                              <th>Status</th>
-                              <th>Actions</th>
                             </tr>
                           </thead>
                           <tbody id="appointments-table-body">
@@ -164,34 +162,41 @@
                         // Safely access nested properties
                         const userName = appointment.user ? `${appointment.user.firstname} ${appointment.user.lastname}` : appointment.member_name;
                         const userEmail = appointment.user ? appointment.user.email : 'N/A';
-                        const contactNumber = appointment.contact_number || 'N/A';
-                        const appointmentTime = appointment.appointment_time || 'N/A';
-                        const status = appointment.status || 'pending';
+                        const contactNumber = appointment.user ? appointment.user.contact_number : appointment.contact_number;
+                        
+                        // Format the time display
+                        let formattedTime = '';
+                        const time = appointment.appointment_time;
+                        if (time) {
+                          const hour = parseInt(time.split(':')[0]);
+                          switch(hour) {
+                            case 8:
+                              formattedTime = '08:00 AM - 10:00 AM';
+                              break;
+                            case 10:
+                              formattedTime = '10:00 AM - 12:00 PM';
+                              break;
+                            case 13:
+                              formattedTime = '01:00 PM - 03:00 PM';
+                              break;
+                            case 15:
+                              formattedTime = '03:00 PM - 05:00 PM';
+                              break;
+                            case 17:
+                              formattedTime = '05:00 PM - 07:00 PM';
+                              break;
+                            default:
+                              formattedTime = time;
+                          }
+                        } else {
+                          formattedTime = 'N/A';
+                        }
 
                         var row = `<tr>
                           <td>${userName}</td>
                           <td>${userEmail}</td>
                           <td>${contactNumber}</td>
-                          <td>${appointmentTime}</td>
-                          <td>
-                            <span class="badge ${getStatusBadgeClass(status)}">
-                              ${status.charAt(0).toUpperCase() + status.slice(1)}
-                            </span>
-                          </td>
-                          <td>
-                            <div class="btn-group" role="group">
-                              <button type="button" class="btn btn-sm btn-info view-details" 
-                                data-id="${appointment.id}"
-                                title="View Details">
-                                <i class="fas fa-eye"></i>
-                              </button>
-                              <button type="button" class="btn btn-sm btn-danger delete-appointment" 
-                                data-id="${appointment.id}"
-                                title="Delete">
-                                <i class="fas fa-trash"></i>
-                              </button>
-                            </div>
-                          </td>
+                          <td>${formattedTime}</td>
                         </tr>`;
                         $("#appointments-table-body").append(row);
                       });
