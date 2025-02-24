@@ -100,6 +100,15 @@
         eventDisplay: 'block',
         eventColor: '#f08080',
         dateClick: function (info) {
+          const selectedDate = new Date(info.dateStr);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0); // Reset time part for accurate date comparison
+          
+          if (selectedDate < today) {
+            alert("Cannot book appointments for past dates");
+            return;
+          }
+          
           document.getElementById("appointment_date").value = info.dateStr;
           $('#bookingModal').modal('show');
         }
