@@ -36,13 +36,14 @@
                       notification.user.lastname }}
                     </td>
                     <td>
-                      {{ notification.user.firstname }}'s booking request has
+                      <!-- {{ notification.user.firstname }}'s booking request has
                       been {% if 'approved' in notification.message %} approved.
                       {% elif 'rejected' in notification.message %} rejected.
                       Reason: {{
                       notification.message.split('Reason:')[1].split('Solution:')[0]
                       }} Solution: {{ notification.message.split('Solution:')[1]
-                      }} {% else %} {{ notification.message }} {% endif %}
+                      }} {% else %} {{ notification.message }} {% endif %} -->
+                       {{notification.message}}
                     </td>
                     <td>{{ notification.created_at }}</td>
                     <td>
