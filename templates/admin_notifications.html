@@ -22,9 +22,9 @@
               <table class="table table-striped" id="table">
                 <thead>
                   <tr>
+                    <th>User</th>
                     <th>Message</th>
                     <th>Created At</th>
-                    <th>User</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -102,7 +102,12 @@
     </div>
     <script>
       $(document).ready(function () {
-        $("#table").DataTable();
+        $("#table").DataTable({
+          order: [[2, 'desc']],
+          columnDefs: [
+            { type: 'date', targets: 2 }
+          ]
+        });
       });
     </script>
     <!-- Footer -->

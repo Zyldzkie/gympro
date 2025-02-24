@@ -894,12 +894,10 @@ def delete_inventory_item(item_id):
 
 @app.route("/admin/notifications")
 def admin_notifications():
-    notifications = Notification.query.all()
+    notifications = Notification.query.order_by(Notification.created_at.desc()).all()
 
-    for notification in notifications:
-        print(
-            f"ID: {notification.id}, User ID: {notification.user_id}, Message: {notification.message}, Seen: {notification.seen}, Created At: {notification.created_at}"
-        )
+    for i in notifications:
+        print(i.created_at)
 
     return render_template("admin_notifications.html", notifications=notifications)
 
