@@ -94,7 +94,22 @@
       background-color: #0c0920 !important;
       border-color: #0c0920 !important;
     }
-    
+
+    .fc-event {
+      border-color: rgb(0, 0, 0) !important;
+      background-color: rgb(0, 0, 0) !important;
+    }
+
+    .fc-event-main, .fc-event-main-frame {
+      background-color: #fff;
+      border-color: #0c0920;
+      color: #000000 !important;
+    }
+
+    .fc-daygrid-event {
+      border-color: rgb(0, 0, 0);
+      background-color: rgb(255, 255, 255);
+    }
   </style>
 
 
@@ -133,9 +148,11 @@
           }
         ],
         selectConstraint: 'businessHours',
-        events: '/get_bookings', // Add this endpoint to fetch bookings
+        events: '/get_bookings',
         eventDisplay: 'block',
-        eventColor: '#f08080',
+        eventColor: '#ffffff',
+        eventTextColor: '#000000',
+        eventBorderColor: '#000000',
         dateClick: function (info) {
           const selectedDate = new Date(info.dateStr);
           const today = new Date();
