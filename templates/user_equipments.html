@@ -78,35 +78,143 @@
       </section>
 
       <style>
+        :root {
+          --primary-color: #0c0920;
+          --accent-color: #20f58a;
+          --card-bg: #ffffff;
+          --text-primary: #2c3e50;
+          --text-secondary: #95a5a6;
+          --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+          background-color: #f8f9fa;
+        }
+
+        .main-content {
+          padding: 2rem;
+        }
+
+        h2 {
+          color: var(--text-primary);
+          font-size: 2rem;
+          font-weight: 600;
+          margin-bottom: 2rem;
+        }
+
+        .equipment-card .card {
+          border: none;
+          border-radius: 15px;
+          box-shadow: var(--shadow);
+          transition: all 0.3s ease;
+          overflow: hidden;
+        }
+
+        .equipment-card .card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
         .card-img-top {
           object-fit: cover;
           height: 200px;
-          /* Adjust this value as necessary */
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
         }
 
         .card-body {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          height: 250px;
-          /* Adjust this value as necessary */
+          padding: 1.5rem;
+          height: auto;
+          min-height: 200px;
+        }
+
+        .card-title {
+          color: var(--text-primary);
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+          background-color: var(--primary-color);
+          border: none;
+          padding: 0.8rem;
+          border-radius: 8px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+          background-color: var(--accent-color);
+          color: var(--primary-color);
+        }
+
+        .btn-secondary {
+          background-color: var(--text-secondary);
+          border: none;
+          padding: 0.8rem;
+          border-radius: 8px;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+          border-radius: 15px;
+          border: none;
+          box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+          background-color: var(--primary-color);
+          color: white;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+          padding: 1.5rem;
+        }
+
+        .modal-body {
+          padding: 2rem;
+        }
+
+        .form-control {
+          border-radius: 8px;
+          border: 1px solid #e0e0e0;
+          padding: 0.8rem;
+          margin-bottom: 1rem;
+        }
+
+        .form-control:focus {
+          border-color: var(--accent-color);
+          box-shadow: 0 0 0 0.2rem rgba(32, 245, 138, 0.25);
+        }
+
+        .alert {
+          border-radius: 10px;
+          border: none;
+          box-shadow: var(--shadow);
+        }
+
+        .alert-success {
+          background-color: #d4edda;
+          color: #155724;
+        }
+
+        footer {
+          background-color: var(--primary-color);
+          color: white;
+          text-align: center;
+          padding: 1rem;
+          position: relative;
+          bottom: 0;
+          width: 100%;
         }
 
         @media (max-width: 767px) {
-          .equipment-card {
-            display: flex;
-            justify-content: center;
+          .main-content {
+            padding: 1rem;
           }
-        }
-
-        .equipment-card {
-          margin-bottom: 10px;
-        }
-
-        .card {
-          width: 100%;
-          max-width: 300px;
-          /* Adjust this value as necessary */
+          
+          .equipment-card {
+            padding: 0.5rem;
+          }
         }
       </style>
     </div>
