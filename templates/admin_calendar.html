@@ -12,6 +12,37 @@
 
   <title>Admin Calendar</title>
   <style>
+    /* Update header button styles for FullCalendar 3.x */
+    .fc-button {
+      background: #0c0920 !important;
+      background-image: none !important;
+      border-color: #0c0920 !important;
+      color: white !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+    }
+
+    .fc-state-default {
+      background: #0c0920 !important;
+      background-image: none !important;
+      border-color: #0c0920 !important;
+      color: white !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+    }
+
+    .fc-state-hover,
+    .fc-state-active,
+    .fc-state-disabled {
+      background-color: #0c0920 !important;
+      color: white !important;
+      background-image: none !important;
+    }
+
+    .fc-state-hover {
+      opacity: 0.8;
+    }
+
     .fc-title {
       color: black;
       cursor: pointer;
@@ -146,9 +177,14 @@
 
                   // Initialize the calendar
                   $("#calendar").fullCalendar({
+                    header: {
+                      left: 'prev,next today',
+                      center: 'title',
+                      right: 'dayGridMonth'
+                    },
                     defaultView: "month",
-                    defaultDate: moment(), // Set default date to today
-                    events: events, // Use the events generated above
+                    defaultDate: moment(),
+                    events: events,
                     eventClick: function (event) {
                       // When an event (appointment count) is clicked, open the modal
                       var appointments = groupedAppointments[event.dateInfo] || [];

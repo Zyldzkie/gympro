@@ -78,6 +78,23 @@
     .weekend-day {
       background-color: #ffebee !important;
     }
+
+    /* Header button styles */
+    .fc-button {
+      background-color: #0c0920 !important;
+      border-color: #0c0920 !important;
+      color: white !important;
+    }
+
+    .fc-button:hover {
+      opacity: 0.8;
+    }
+
+    .fc-button-active {
+      background-color: #0c0920 !important;
+      border-color: #0c0920 !important;
+    }
+    
   </style>
 
 
@@ -90,7 +107,7 @@
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth'
+          right: ''
         },
         initialView: 'dayGridMonth',
         hiddenDays: ["Saturday", "Sunday"], // Hide weekends
@@ -176,13 +193,11 @@
         <!-- Calendar Section -->
         <h2 class="text-center">Real-Time Appointment Calendar</h2>
 
-
-
-
-
-        <div id='calendar'></div>
-
-
+        <div class="card p-3">
+          <div class="card-body">
+            <div id='calendar'></div>
+          </div>
+        </div>
 
       </div>
     </div>
