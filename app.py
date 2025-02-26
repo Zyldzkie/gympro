@@ -1009,19 +1009,36 @@ def calendar_view():
     )
 
 
-@app.route('/book_appointment', methods=['POST'])
+@app.route("/book_appointment", methods=["POST"])
 def book_appointment():
-    if 'user_id' not in session:
-        return jsonify({'success': False, 'message': 'Please log in first'})
-    
+    if "user_id" not in session:
+        return jsonify({
+            'success': False,
+            'message': 'Please log in to book an appointment'
+        })
+
     try:
-        user = User.query.get(session['user_id'])
+        user_id = session['user_id']
         appointment_date = request.form.get('appointment_date')
         appointment_time = request.form.get('appointment_time')
-        
-        # Create the booking
+
+        # Check if user already has a booking for this timeslot
+        existing_booking = Booking.query.filter_by(
+            member_name=user_id,
+            appointment_date=datetime.strptime(appointment_date, '%Y-%m-%d').date(),
+            appointment_time=datetime.strptime(appointment_time, '%H:%M').time()
+        ).first()
+
+        if existing_booking:
+            return jsonify({
+                'success': False,
+                'message': 'You already have a booking for this timeslot!'
+            })
+
+        # Continue with existing booking logic
+        user = User.query.get(user_id)
         booking = Booking(
-            member_name=session['user_id'],
+            member_name=user_id,
             contact_number=user.contact_number,
             appointment_date=datetime.strptime(appointment_date, '%Y-%m-%d').date(),
             appointment_time=datetime.strptime(appointment_time, '%H:%M').time(),
@@ -1030,10 +1047,9 @@ def book_appointment():
         
         db.session.add(booking)
         
-        # Create notification for the booking
         notification_message = f"New appointment booked for {appointment_date} at {datetime.strptime(appointment_time, '%H:%M').strftime('%I:%M %p')}"
         notification = Notification(
-            user_id=session['user_id'],
+            user_id=user_id,
             message=notification_message,
             seen=False
         )
