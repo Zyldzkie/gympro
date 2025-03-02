@@ -1042,7 +1042,7 @@ def book_appointment():
             contact_number=user.contact_number,
             appointment_date=datetime.strptime(appointment_date, '%Y-%m-%d').date(),
             appointment_time=datetime.strptime(appointment_time, '%H:%M').time(),
-            status='pending'
+            status='accepted'
         )
         
         db.session.add(booking)
@@ -1101,19 +1101,19 @@ def submit_borrow_request():
         user_id=user_id,
         equipment_id=equipment_id,
         return_date=datetime.strptime(return_date, "%Y-%m-%d"),
+        status="accepted"
     )
     db.session.add(new_borrowing)
     
-    # Add notification
     notification = Notification(
         user_id=user_id,
-        message=f"Equipment borrowing request submitted: {equipment_name} until {return_date}",
+        message=f"Your equipment borrowing request for {equipment_name} has been automatically accepted until {return_date}",
         seen=False
     )
     db.session.add(notification)
     
     db.session.commit()
-    flash("Borrow request submitted successfully!", "success")
+    flash("Equipment borrowing request accepted!", "success")
     return redirect(url_for("user_equipments"))
 
 
